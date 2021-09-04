@@ -6,16 +6,19 @@ import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 import { terser } from "rollup-plugin-terser";
+// import { errorExtraction } from "./plugins/extractErrors";
 
 const shebang = require('rollup-plugin-preserve-shebang');
 
 interface CreateConfigOptions {
   env: 'production' | 'dev'
   input: string
-  minify: boolean
+  minify?: boolean
+  // extractErrors: boolean
 }
 
-const EMIT_ESM_PLUGINS = [shebang(), requireShim(), resolveImports()];
+const DEFAULT_PLUGINS = [shebang()];
+const EMIT_ESM_PLUGINS = [requireShim(), resolveImports()];
 
 const DEFAULTS = {
   /**
@@ -31,18 +34,26 @@ const DEFAULTS = {
 /**
  * The minimum config needed to execute the program as expected.
  */
-const createDevConfig = (input: string): RollupOptions => {
+const createDevConfig = ({ input }: { input: string }): RollupOptions => {
   return {
     output: {
       file: input,
       format: 'es',
     },
+    plugins: [
+      ...DEFAULT_PLUGINS,
+      ...EMIT_ESM_PLUGINS,
+    ],
   };
 };
 /**
  * The maximum compression config for production builds.
  */
-const createProductionConfig = (input: string, minify: boolean): RollupOptions => {
+const createProductionConfig = ({
+  input,
+  minify,
+  // extractErrors
+}: { input: string, minify: boolean }): RollupOptions => {
   return {
     output: {
       file: input,
@@ -53,6 +64,8 @@ const createProductionConfig = (input: string, minify: boolean): RollupOptions =
       exports: 'named',
     },
     plugins: [
+      ...DEFAULT_PLUGINS,
+      // extractErrors && errorExtraction(),
       ...EMIT_ESM_PLUGINS,
       input.endsWith('.css') &&
         postcss({
@@ -90,12 +103,13 @@ const createProductionConfig = (input: string, minify: boolean): RollupOptions =
 export const createConfig = ({
   env,
   input,
-  minify,
+  minify = false,
+  // extractErrors,
 }: CreateConfigOptions): RollupOptions => {
   const envConfig =
     env === 'production'
-      ? createProductionConfig(input, minify)
-      : createDevConfig(input);
+      ? createProductionConfig({ input, minify })
+      : createDevConfig({ input });
 
   return {
     ...DEFAULTS,
