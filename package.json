@@ -1,0 +1,52 @@
+{
+  "name": "@tszip/rollup-config",
+  "author": "Christian Lewis",
+  "type": "module",
+  "version": "0.0.1",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "start": "tszip watch",
+    "build": "tszip build",
+    "test": "tszip test",
+    "posttest": "node test/import.js",
+    "lint": "tszip lint",
+    "prepare": "tszip build"
+  },
+  "module": "./dist/index.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": "./dist/index.js",
+    "./*": "./dist/*/index.js"
+  },
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "peerDependencies": {},
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "devDependencies": {
+    "@tszip/tszip": "^0.2.6",
+    "@types/cssnano": "^4.0.1",
+    "husky": "^7.0.2",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "@tszip/esm-require": "^0.0.1",
+    "autoprefixer": "^10.3.4",
+    "cssnano": "^5.0.8",
+    "rollup": "^2.56.3",
+    "rollup-plugin-postcss": "^4.0.1",
+    "rollup-plugin-preserve-shebang": "^1.0.1",
+    "rollup-plugin-terser": "^7.0.2"
+  }
+}
