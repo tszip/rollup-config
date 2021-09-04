@@ -2,7 +2,7 @@
   "name": "@tszip/rollup-config",
   "author": "Christian Lewis",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "engines": {
     "node": ">=14"
@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@babel/helper-module-imports": "^7.15.4",
-    "@tszip/esm-require": "^0.0.1",
+    "@tszip/esm-require": "latest",
     "autoprefixer": "^10.3.4",
     "cssnano": "^5.0.8",
     "rollup": "^2.56.3",
