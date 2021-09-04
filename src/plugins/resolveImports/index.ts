@@ -7,9 +7,6 @@ import {
   renameExtension,
   exists,
 } from './utils/filesystem';
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
 
 /**
  * Resolve every relative import in output to their entry points.
