@@ -22,5 +22,3 @@ export const requireShim = (): Plugin => ({
     };
   },
 });
-
-export const a = 42244;

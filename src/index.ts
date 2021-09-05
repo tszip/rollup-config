@@ -11,6 +11,7 @@ import { join, relative } from "path";
 import { requireShim } from "./plugins/requireShim";
 import { resolveImports } from "./plugins/resolveImports";
 import { terser } from "rollup-plugin-terser";
+import { renameExtension } from "./plugins/resolveImports/utils/filesystem";
 // import { errorExtraction } from "./plugins/extractErrors";
 
 const shebang = require('rollup-plugin-preserve-shebang');
@@ -42,9 +43,10 @@ const DEFAULTS = {
  * The minimum config needed to execute the program as expected.
  */
 const createWatchConfig = ({ input }: Omit<RunConfig, 'minify'>): RollupOptions => {
+  const file = renameExtension(join('dist', relative('./src', input)), '.js');
   return {
     output: {
-      file: join('dist', relative('./src', input)),
+      file,
       format: 'es',
     },
     plugins: [
