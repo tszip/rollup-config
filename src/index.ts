@@ -28,7 +28,7 @@ type RunConfig = Omit<CreateConfigOptions, 'action'>;
 const DEFAULT_PLUGINS = [shebang()];
 const getEsmPlugins = (watch = false) => [requireShim(), resolveImports(watch)];
 
-const DEFAULTS = {
+const DEFAULTS: RollupOptions = {
   /**
    * Silence warnings.
    */
@@ -56,7 +56,15 @@ const createWatchConfig = ({ input }: Omit<RunConfig, 'minify'>): RollupOptions 
     ],
     watch: {
       include: ['src/**'],
-      exclude: ['node_modules/**', 'dist/**'],
+      exclude: [
+        'node_modules/**',
+        'dist/**',
+        /**
+         * Do not feed declaration files directly to @rollup/plugin-typescript.
+         * @see https://github.com/rollup/plugins/issues/992
+         */
+        '*.d.ts',
+      ],
     },
   };
 };
