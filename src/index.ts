@@ -1,21 +1,27 @@
-import { RollupOptions } from "rollup";
-import { requireShim } from "./plugins/requireShim";
-import { resolveImports } from "./plugins/resolveImports";
+// import * as typescript from 'typescript';
+// import { resolve } from 'path';
 
+import typescriptPlugin from "@rollup/plugin-typescript";
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
+
+import { RollupOptions } from "rollup";
+import { requireShim } from "./plugins/requireShim";
+import { resolveImports } from "./plugins/resolveImports";
 import { terser } from "rollup-plugin-terser";
 // import { errorExtraction } from "./plugins/extractErrors";
 
 const shebang = require('rollup-plugin-preserve-shebang');
 
 interface CreateConfigOptions {
-  env: 'production' | 'dev'
+  action: 'build' | 'watch'
   input: string
   minify?: boolean
   // extractErrors: boolean
 }
+
+type RunConfig = Omit<CreateConfigOptions, 'action'>;
 
 const DEFAULT_PLUGINS = [shebang()];
 const EMIT_ESM_PLUGINS = [requireShim(), resolveImports()];
@@ -34,26 +40,27 @@ const DEFAULTS = {
 /**
  * The minimum config needed to execute the program as expected.
  */
-const createDevConfig = ({ input }: { input: string }): RollupOptions => {
+const createWatchConfig = ({ input: _ }: Omit<RunConfig, 'minify'>): RollupOptions => {
   return {
     output: {
-      file: input,
+      dir: 'dist',
       format: 'es',
     },
     plugins: [
       ...DEFAULT_PLUGINS,
+      typescriptPlugin(),
       ...EMIT_ESM_PLUGINS,
     ],
+    watch: {
+      include: ['src/**'],
+      exclude: ['node_modules/**', 'dist/**'],
+    },
   };
 };
 /**
  * The maximum compression config for production builds.
  */
-const createProductionConfig = ({
-  input,
-  minify,
-  // extractErrors
-}: { input: string, minify: boolean }): RollupOptions => {
+const createBuildConfig = ({ input, minify }: RunConfig): RollupOptions => {
   return {
     output: {
       file: input,
@@ -65,7 +72,6 @@ const createProductionConfig = ({
     },
     plugins: [
       ...DEFAULT_PLUGINS,
-      // extractErrors && errorExtraction(),
       ...EMIT_ESM_PLUGINS,
       input.endsWith('.css') &&
         postcss({
@@ -101,15 +107,15 @@ const createProductionConfig = ({
 }
 
 export const createConfig = ({
-  env,
+  action,
   input,
   minify = false,
   // extractErrors,
 }: CreateConfigOptions): RollupOptions => {
   const envConfig =
-    env === 'production'
-      ? createProductionConfig({ input, minify })
-      : createDevConfig({ input });
+    action === 'build'
+      ? createBuildConfig({ input, minify })
+      : createWatchConfig({ input });
 
   return {
     ...DEFAULTS,
