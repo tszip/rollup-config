@@ -7,6 +7,7 @@ import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 
 import { RollupOptions } from "rollup";
+import { join, relative } from "path";
 import { requireShim } from "./plugins/requireShim";
 import { resolveImports } from "./plugins/resolveImports";
 import { terser } from "rollup-plugin-terser";
@@ -24,7 +25,7 @@ interface CreateConfigOptions {
 type RunConfig = Omit<CreateConfigOptions, 'action'>;
 
 const DEFAULT_PLUGINS = [shebang()];
-const EMIT_ESM_PLUGINS = [requireShim(), resolveImports()];
+const getEsmPlugins = (watch = false) => [requireShim(), resolveImports(watch)];
 
 const DEFAULTS = {
   /**
@@ -35,21 +36,21 @@ const DEFAULTS = {
    * Plugins necessary to render TypeScript to valid ESNext (no directory
    * imports, must be statically resolved AOT).
    */
-  plugins: EMIT_ESM_PLUGINS,
+  plugins: getEsmPlugins(),
 };
 /**
  * The minimum config needed to execute the program as expected.
  */
-const createWatchConfig = ({ input: _ }: Omit<RunConfig, 'minify'>): RollupOptions => {
+const createWatchConfig = ({ input }: Omit<RunConfig, 'minify'>): RollupOptions => {
   return {
     output: {
-      dir: 'dist',
+      file: join('dist', relative('./src', input)),
       format: 'es',
     },
     plugins: [
       ...DEFAULT_PLUGINS,
       typescriptPlugin(),
-      ...EMIT_ESM_PLUGINS,
+      ...getEsmPlugins(true),
     ],
     watch: {
       include: ['src/**'],
@@ -72,7 +73,7 @@ const createBuildConfig = ({ input, minify }: RunConfig): RollupOptions => {
     },
     plugins: [
       ...DEFAULT_PLUGINS,
-      ...EMIT_ESM_PLUGINS,
+      ...getEsmPlugins(),
       input.endsWith('.css') &&
         postcss({
           plugins: [

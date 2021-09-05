@@ -15,7 +15,7 @@ import {
  * 'react/jsx-runtime` when react/jsx-runtime isn't a valid import
  * source:  react/jsx-runtime.js *is*.
  */
-export const resolveImports = () => {
+export const resolveImports = (watch = false) => {
   const fileExtensions = ['.mjs', '.js', '.jsx', '.cjs'];
 
   return {
@@ -43,6 +43,12 @@ export const resolveImports = () => {
          */
         let absEntryPoint;
         try {
+          /**
+           * Force the resolve() algorithm to catch TS files in watch mode.
+           */
+          if (watch && !require.extensions['.ts']) {
+            require.extensions['.ts'] = require.extensions['.js'];
+          }
           absEntryPoint = require.resolve(chunkImport, {
             paths: [baseDir],
           });
