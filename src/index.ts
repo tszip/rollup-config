@@ -1,7 +1,3 @@
-// import * as typescript from 'typescript';
-// import { resolve } from 'path';
-
-import typescriptPlugin from "@rollup/plugin-typescript";
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
@@ -12,7 +8,9 @@ import { requireShim } from "./plugins/requireShim";
 import { resolveImports } from "./plugins/resolveImports";
 import { terser } from "rollup-plugin-terser";
 import { renameExtension } from "./plugins/resolveImports/utils/filesystem";
-// import { errorExtraction } from "./plugins/extractErrors";
+import typescript from '@rollup/plugin-typescript';
+
+export const a = 42;
 
 const shebang = require('rollup-plugin-preserve-shebang');
 
@@ -51,11 +49,13 @@ const createWatchConfig = ({ input }: Omit<RunConfig, 'minify'>): RollupOptions 
     },
     plugins: [
       ...DEFAULT_PLUGINS,
-      typescriptPlugin(),
+      // watchTsSrcFiles(),
+      typescript(),
+      // tsc(),
       ...getEsmPlugins(true),
     ],
     watch: {
-      include: ['src/**'],
+      include: ['src/**/*'],
       exclude: [
         'node_modules/**',
         'dist/**',
@@ -63,7 +63,7 @@ const createWatchConfig = ({ input }: Omit<RunConfig, 'minify'>): RollupOptions 
          * Do not feed declaration files directly to @rollup/plugin-typescript.
          * @see https://github.com/rollup/plugins/issues/992
          */
-        '*.d.ts',
+        // '*.d.ts',
       ],
     },
   };

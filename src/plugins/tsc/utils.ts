@@ -39,11 +39,50 @@ export function resolveId(id: string, importer = '') {
   return tsResolve.resolvedModule.resolvedFileName;
 }
 
-export const parseArgs = (options: { [key: string]: any }) => {
+/**
+ * Force src/ rootDir, dist/ outDir, and override noEmit.
+ */
+const DEFAULT_TSC_FLAGS = {
+  rootDir: 'src/',
+  outDir: 'dist/',
+  jsx: 'react-jsx',
+  module: 'esnext',
+  target: 'esnext',
+  noEmit: false,
+  allowJs: true,
+  declaration: true,
+  sourceMap: true,
+  esModuleInterop: true,
+  allowSyntheticDefaultImports: true,
+  resolveJsonModule: true,
+};
+
+type TscFlagOverrides = Partial<typeof DEFAULT_TSC_FLAGS>;
+type CustomTscFlags = {
+  tsconfig?: string;
+};
+
+type TscFlags = CustomTscFlags & TscFlagOverrides;
+
+export const getTscFlags = (customFlags: TscFlags) => {
+  const flags: TscFlags = {
+    ...DEFAULT_TSC_FLAGS,
+    ...customFlags,
+  };
+
   const args: string[] = [];
-  for (const [key, val] of Object.entries(options)) {
-    args.push(`--${key}`, val.toString());
+  for (const [flag, value] of Object.entries(flags)) {
+    if (!value) continue;
+    switch (flag) {
+      case 'tsconfig':
+        args.push('-p', value.toString());
+        break;
+      
+      default:
+        args.push(`--${flag}`, value.toString());
+        break;
+    }
   }
 
   return args;
-};
+}

@@ -1,6 +1,6 @@
 import { Plugin } from "rollup";
 
-const REQUIRE_SHIM = `import{require}from'@tszip/esm-require';`;
+const REQUIRE_SHIM = `import { require } from '@tszip/esm-require';\n`;
 
 export const requireShim = (): Plugin => ({
   name: 'Shim require().',

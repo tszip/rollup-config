@@ -36,6 +36,7 @@
   "devDependencies": {
     "@tszip/tszip": "^0.2.6",
     "@types/cssnano": "^4.0.1",
+    "@types/fs-extra": "^9.0.12",
     "husky": "^7.0.2",
     "tslib": "^2.3.1",
     "typescript": "^4.4.2"
@@ -46,6 +47,8 @@
     "@tszip/esm-require": "latest",
     "autoprefixer": "^10.3.4",
     "cssnano": "^5.0.8",
+    "fast-glob": "^3.2.7",
+    "fs-extra": "^10.0.0",
     "rollup": "^2.56.3",
     "rollup-plugin-postcss": "^4.0.1",
     "rollup-plugin-preserve-shebang": "^1.0.1",

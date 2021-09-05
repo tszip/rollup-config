@@ -13,52 +13,31 @@
  * @see https://github.com/GoogleChromeLabs/proxx/blob/master/lib/simple-ts.js
  * @see https://twitter.com/jaffathecake/status/1145979217852678144
  */
-
+import fs from 'fs-extra';
 import execa from 'execa';
 import glob from 'glob-promise';
 
 import { basename, extname, join } from 'path';
-import { cp } from 'fs/promises';
-import { parseArgs } from './utils';
+import { getTscFlags } from './utils';
 
-interface TscArgs {
-  tsconfig?: string | null;
+export interface RunTscArgs {
+  tsconfig?: string;
   transpileOnly?: boolean;
-  // watch?: boolean;
 }
 
-export async function runTsc({
-  tsconfig = null,
+export const execTsc = async ({
+  tsconfig,
   transpileOnly = false,
   // watch = false,
-}: TscArgs = {}) {
+}: RunTscArgs) => {
+
+  const tscFlags = getTscFlags({ tsconfig });
+
   /**
-   * Force src/ rootDir, dist/ outDir, and override noEmit.
-   *
-   * @todo Leave sourceMaps and declarations in when splitting per-file.
+   * Execute TSC and transpile.
    */
-  const args: Record<string, any> = {
-    rootDir: 'src/',
-    outDir: 'dist/',
-    jsx: 'react-jsx',
-    module: 'esnext',
-    target: 'esnext',
-    noEmit: false,
-    allowJs: true,
-    declaration: true,
-    sourceMap: true,
-    esModuleInterop: true,
-    allowSyntheticDefaultImports: true,
-    resolveJsonModule: true,
-  };
-
-  const parsedArgs = parseArgs(args);
-  if (tsconfig) {
-    parsedArgs.push('-p', tsconfig);
-  }
-
   try {
-    await execa('tsc', parsedArgs);
+    await execa('tsc', tscFlags);
   } catch (error: any) {
     if (!transpileOnly) {
       console.error(error.toString());
@@ -66,6 +45,9 @@ export async function runTsc({
     }
   }
 
+  /**
+   * Copy over any CSS etc. (non-TS/JS/JSON) that TSC might not have grabbed.
+   */
   const srcFiles = await glob('src/**/*', { nodir: true });
   await Promise.all(
     srcFiles
@@ -73,7 +55,7 @@ export async function runTsc({
         (file: string) => !/^\.(ts|tsx|js|jsx|json)$/.test(extname(file))
       )
       .map(
-        async (file: string) => await cp(file, join('dist', basename(file)))
+        async (file: string) => await fs.copy(file, join('dist', basename(file)))
       )
   );
 
