@@ -1275,10 +1275,10 @@
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.1.1.tgz#3348564048e7a2d7398c935d466c0414ebb6a669"
   integrity sha512-Z6DoceYb/1xSg5+e+ZlPZ9v0N16ZvZ+wYMraFue4HYrE4ttONKtsvruIRf6t9TBR0YvSOfi1hUU0fJfBLCDYow==
 
-"@tszip/esm-require@0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@tszip/esm-require/-/esm-require-0.2.3.tgz#3a30def7437da2aff92d41b4892a192b1b81ac52"
-  integrity sha512-/J0kWUSnjaJpC/ehbgXoeaZd2eHy+7Qm+SCX93hsicAJd+DpKNujNLcTpcDXbp94Yws9cuNpQsm1kgJfeb9NTA==
+"@tszip/esm-require@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@tszip/esm-require/-/esm-require-0.2.4.tgz#ed9d81342cf0c191b22aec5af9deb85397ff82db"
+  integrity sha512-c22hebWXfYBzeFMq3QwkeaQqggNxNJW6heBFNcLx3BehzgiCUkmiIAhpRWDstAwGsyLsoTwPkWWANDm3pG2M8Q==
   dependencies:
     module "^1.2.5"
 
