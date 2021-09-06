@@ -1,17 +1,16 @@
+export const a = 10;
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 
 import { RollupOptions } from "rollup";
-import { join, relative } from "path";
 import { requireShim } from "./plugins/requireShim";
 import { resolveImports } from "./plugins/resolveImports";
 import { terser } from "rollup-plugin-terser";
-import { renameExtension } from "./plugins/resolveImports/utils/filesystem";
-import typescript from '@rollup/plugin-typescript';
 
 const shebang = require('rollup-plugin-preserve-shebang');
 
+type RunConfig = Omit<CreateConfigOptions, 'action'>;
 interface CreateConfigOptions {
   action: 'build' | 'dev' | 'watch'
   input: string
@@ -19,7 +18,6 @@ interface CreateConfigOptions {
   // extractErrors: boolean
 }
 
-type RunConfig = Omit<CreateConfigOptions, 'action'>;
 
 const DEFAULT_PLUGINS = [shebang()];
 const getEsmPlugins = (watch = false) => [requireShim(), resolveImports(watch)];
@@ -37,38 +35,6 @@ const DEFAULTS: RollupOptions = {
 };
 
 /**
- * The minimum config needed to execute the program as expected.
- */
-export const createWatchConfig = ({ input }: Omit<RunConfig, 'minify'>): RollupOptions => {
-  const file = renameExtension(join('dist', relative('./src', input)), '.js');
-  return {
-    output: {
-      file,
-      format: 'es',
-    },
-    plugins: [
-      ...DEFAULT_PLUGINS,
-      // watchTsSrcFiles(),
-      typescript(),
-      // tsc(),
-      ...getEsmPlugins(true),
-    ],
-    watch: {
-      include: ['src/**/*'],
-      exclude: [
-        'node_modules/**',
-        'dist/**',
-        /**
-         * Do not feed declaration files directly to @rollup/plugin-typescript.
-         * @see https://github.com/rollup/plugins/issues/992
-         */
-        // '*.d.ts',
-      ],
-    },
-  };
-};
-
-/**
  * Create a development config which does the least amount of work to emit
  * operable output.
  */
@@ -76,6 +42,10 @@ export const createDevConfig = ({ input }: RunConfig): RollupOptions => {
   return {
     ...DEFAULTS,
     input,
+    output: {
+      file: input,
+      format: 'es',
+    },
     plugins: [
       ...DEFAULT_PLUGINS,
       ...getEsmPlugins(),
