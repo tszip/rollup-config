@@ -22,25 +22,12 @@ interface CreateConfigOptions {
 const DEFAULT_PLUGINS = [shebang()];
 const getEsmPlugins = (watch = false) => [requireShim(), resolveImports(watch)];
 
-const DEFAULTS: RollupOptions = {
-  /**
-   * Silence warnings.
-   */
-  onwarn: () => {},
-  /**
-   * Plugins necessary to render TypeScript to valid ESNext (no directory
-   * imports, must be statically resolved AOT).
-   */
-  plugins: getEsmPlugins(),
-};
-
 /**
  * Create a development config which does the least amount of work to emit
  * operable output.
  */
 export const createDevConfig = ({ input }: RunConfig): RollupOptions => {
   return {
-    ...DEFAULTS,
     input,
     output: {
       file: input,
@@ -50,16 +37,16 @@ export const createDevConfig = ({ input }: RunConfig): RollupOptions => {
       ...DEFAULT_PLUGINS,
       ...getEsmPlugins(),
       input.endsWith('.css') &&
-        postcss({
-          plugins: [
-            autoprefixer(),
-            cssnano({
-              preset: 'default',
-            }),
-          ],
-          inject: false,
-          extract: true,
-        }),
+      postcss({
+        plugins: [
+          autoprefixer(),
+          cssnano({
+            preset: 'default',
+          }),
+        ],
+        inject: false,
+        extract: true,
+      }),
     ],
   };
 }
@@ -69,7 +56,6 @@ export const createDevConfig = ({ input }: RunConfig): RollupOptions => {
  */
 export const createBuildConfig = ({ input, minify }: RunConfig): RollupOptions => {
   return {
-    ...DEFAULTS,
     output: {
       file: input,
       format: 'es',
@@ -82,16 +68,16 @@ export const createBuildConfig = ({ input, minify }: RunConfig): RollupOptions =
       ...DEFAULT_PLUGINS,
       ...getEsmPlugins(),
       input.endsWith('.css') &&
-        postcss({
-          plugins: [
-            autoprefixer(),
-            cssnano({
-              preset: 'default',
-            }),
-          ],
-          inject: false,
-          extract: true,
-        }),
+      postcss({
+        plugins: [
+          autoprefixer(),
+          cssnano({
+            preset: 'default',
+          }),
+        ],
+        inject: false,
+        extract: true,
+      }),
       minify && terser({
         format: {
           keep_quoted_props: true,
@@ -129,13 +115,12 @@ export const createConfig = ({
     case 'dev':
       config = createDevConfig({ input });
       break;
-    
+
     case 'watch':
       break;
   }
 
   return {
-    ...DEFAULTS,
     ...config,
     /**
      * Entry-point to create a config for.
@@ -145,5 +130,9 @@ export const createConfig = ({
      * Mark all other entry-points as extern (do not resolve or bundle them).
      */
     external: (id: string) => id !== input,
+    /**
+     * Silence warnings.
+     */
+    onwarn: () => { },
   };
 }
