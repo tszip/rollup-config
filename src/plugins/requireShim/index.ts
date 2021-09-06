@@ -11,6 +11,7 @@ export const requireShim = (): Plugin => ({
     if (chunk.imports.includes('@tszip/esm-require')) {
       return null;
     }
+
     if (code.startsWith('#!')) {
       const afterNewline = code.indexOf('\n') + 1;
       const shebang = code.slice(0, afterNewline);
