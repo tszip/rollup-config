@@ -10,12 +10,10 @@ import { terser } from "rollup-plugin-terser";
 import { renameExtension } from "./plugins/resolveImports/utils/filesystem";
 import typescript from '@rollup/plugin-typescript';
 
-export const a = 42;
-
 const shebang = require('rollup-plugin-preserve-shebang');
 
 interface CreateConfigOptions {
-  action: 'build' | 'watch'
+  action: 'build' | 'dev' | 'watch'
   input: string
   minify?: boolean
   // extractErrors: boolean
@@ -37,10 +35,11 @@ const DEFAULTS: RollupOptions = {
    */
   plugins: getEsmPlugins(),
 };
+
 /**
  * The minimum config needed to execute the program as expected.
  */
-const createWatchConfig = ({ input }: Omit<RunConfig, 'minify'>): RollupOptions => {
+export const createWatchConfig = ({ input }: Omit<RunConfig, 'minify'>): RollupOptions => {
   const file = renameExtension(join('dist', relative('./src', input)), '.js');
   return {
     output: {
@@ -68,11 +67,39 @@ const createWatchConfig = ({ input }: Omit<RunConfig, 'minify'>): RollupOptions 
     },
   };
 };
+
+/**
+ * Create a development config which does the least amount of work to emit
+ * operable output.
+ */
+export const createDevConfig = ({ input }: RunConfig): RollupOptions => {
+  return {
+    ...DEFAULTS,
+    input,
+    plugins: [
+      ...DEFAULT_PLUGINS,
+      ...getEsmPlugins(),
+      input.endsWith('.css') &&
+        postcss({
+          plugins: [
+            autoprefixer(),
+            cssnano({
+              preset: 'default',
+            }),
+          ],
+          inject: false,
+          extract: true,
+        }),
+    ],
+  };
+}
+
 /**
  * The maximum compression config for production builds.
  */
-const createBuildConfig = ({ input, minify }: RunConfig): RollupOptions => {
+export const createBuildConfig = ({ input, minify }: RunConfig): RollupOptions => {
   return {
+    ...DEFAULTS,
     output: {
       file: input,
       format: 'es',
@@ -123,14 +150,23 @@ export const createConfig = ({
   minify = false,
   // extractErrors,
 }: CreateConfigOptions): RollupOptions => {
-  const envConfig =
-    action === 'build'
-      ? createBuildConfig({ input, minify })
-      : createWatchConfig({ input });
+  let config = {};
+  switch (action) {
+    case 'build':
+      config = createBuildConfig({ input, minify });
+      break;
+
+    case 'dev':
+      config = createDevConfig({ input });
+      break;
+    
+    case 'watch':
+      break;
+  }
 
   return {
     ...DEFAULTS,
-    ...envConfig,
+    ...config,
     /**
      * Entry-point to create a config for.
      */
