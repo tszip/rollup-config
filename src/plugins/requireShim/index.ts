@@ -1,16 +1,16 @@
 import { Plugin, RenderedChunk } from "rollup";
 
-const REQUIRE_SHIM = `import '@tszip/esm-require';\n`;
+const REQUIRE_SHIM = `await (async()=>{if(void 0===globalThis.require){const{default:e}=await import("module");globalThis.require=e.createRequire(import.meta.url)}})();\n`;
 
 export const requireShim = (): Plugin => ({
   name: 'Shim require().',
   renderChunk: async (code, chunk: RenderedChunk) => {
     /**
-     * Skip if the shim already exists, or if we're emitting this polyfill.
-     */
+    * Skip if the shim already exists, or if we're emitting this polyfill.
+    */
     if (
-      chunk.imports.includes('@tszip/esm-require') &&
-      chunk.fileName.endsWith('esm-require.js')
+      chunk.imports.includes('@tszip/esm-require') ||
+      chunk?.facadeModuleId?.endsWith('esm-require/dist/index.js')
     ) {
       return null;
     }
