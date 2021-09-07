@@ -2,7 +2,7 @@
   "name": "@tszip/rollup-config",
   "author": "Christian Lewis",
   "type": "module",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "license": "MIT",
   "engines": {
     "node": ">=14"
@@ -18,7 +18,7 @@
     "test": "tszip test",
     "exe": "chmod +x dist/index.*js",
     "posttest": "node test/import.js",
-    "prepare": "yarn build && yarn test && yarn deduplicate",
+    "prepublish": "yarn deduplicate && yarn build && yarn test",
     "postbuild": "yarn exe",
     "deduplicate": "yarn-deduplicate -s fewer yarn.lock",
     "deduplicate:check": "yarn-deduplicate -s fewer yarn.lock --list --fail"
