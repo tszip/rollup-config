@@ -4,7 +4,6 @@ import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 
 import { RollupOptions } from "rollup";
-import { requireShim } from "./plugins/requireShim";
 import { resolveImports } from "./plugins/resolveImports";
 import { terser } from "rollup-plugin-terser";
 
@@ -20,7 +19,7 @@ interface CreateConfigOptions {
 
 
 const DEFAULT_PLUGINS = [shebang()];
-const getEsmPlugins = (watch = false) => [requireShim(), resolveImports(watch)];
+const getEsmPlugins = (watch = false) => [resolveImports(watch)];
 
 /**
  * Create a development config which does the least amount of work to emit
