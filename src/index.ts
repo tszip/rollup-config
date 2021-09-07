@@ -1,4 +1,8 @@
-export const a = 10;
+/**
+ * Import require() shim at the top of the context.
+ */
+import '@tszip/esm-require';
+
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
