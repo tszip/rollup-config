@@ -2,7 +2,7 @@
   "name": "@tszip/rollup-config",
   "author": "Christian Lewis",
   "type": "module",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "license": "MIT",
   "engines": {
     "node": ">=14"
@@ -15,7 +15,8 @@
     "build": "tszip build",
     "test": "tszip test",
     "posttest": "node test/import.js",
-    "lint": "tszip lint"
+    "lint": "tszip lint",
+    "prepare": "tszip build"
   },
   "module": "./dist/index.js",
   "exports": {

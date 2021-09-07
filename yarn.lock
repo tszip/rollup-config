@@ -1289,9 +1289,9 @@
   integrity sha512-Z6DoceYb/1xSg5+e+ZlPZ9v0N16ZvZ+wYMraFue4HYrE4ttONKtsvruIRf6t9TBR0YvSOfi1hUU0fJfBLCDYow==
 
 "@tszip/esm-require@^0.2.4":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@tszip/esm-require/-/esm-require-0.2.6.tgz#b763c20e913766626f998efdcabbd9f771a24e3f"
-  integrity sha512-m5i0doxqXAXOs6ggEfFq6XPnvSK6e4YJNM53+TPIelERobAhnMO/QbLrCBtu2zWequ/Tq01pHgxOifUeEAUJGQ==
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@tszip/esm-require/-/esm-require-0.2.7.tgz#cf9afef0b1fd42a9b89e178a510cf5784d12ccd8"
+  integrity sha512-z1dNv68ZeMZrUP388CrSozoJvGxlC089soQS20AkzMzHq6Tr1uSBirLSjjaQ6obno0CBKr67NyOJoleyR57WWA==
   dependencies:
     module "^1.2.5"
 
