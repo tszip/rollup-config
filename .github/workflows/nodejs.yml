@@ -26,7 +26,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Lint codebase
-        run: yarn lint:post-build
+        run: yarn lint
 
       - name: Deduplicate dependencies
         run: yarn deduplicate:check
