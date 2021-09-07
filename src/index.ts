@@ -1,14 +1,10 @@
-/**
- * Import require() shim at the top of the context.
- */
-import '@tszip/esm-require';
+import { resolveImports } from "@tszip/resolve-imports";
 
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 
 import { RollupOptions } from "rollup";
-import { resolveImports } from "./plugins/resolveImports";
 import { terser } from "rollup-plugin-terser";
 
 const shebang = require('rollup-plugin-preserve-shebang');
@@ -23,7 +19,7 @@ interface CreateConfigOptions {
 
 
 const DEFAULT_PLUGINS = [shebang()];
-const getEsmPlugins = (watch = false) => [resolveImports(watch)];
+const RESOLVE_ESM_PLUGINS = [resolveImports()];
 
 /**
  * Create a development config which does the least amount of work to emit
@@ -38,7 +34,7 @@ export const createDevConfig = ({ input }: RunConfig): RollupOptions => {
     },
     plugins: [
       ...DEFAULT_PLUGINS,
-      ...getEsmPlugins(),
+      ...RESOLVE_ESM_PLUGINS,
       input.endsWith('.css') &&
       postcss({
         plugins: [
@@ -69,7 +65,7 @@ export const createBuildConfig = ({ input, minify }: RunConfig): RollupOptions =
     },
     plugins: [
       ...DEFAULT_PLUGINS,
-      ...getEsmPlugins(),
+      ...RESOLVE_ESM_PLUGINS,
       input.endsWith('.css') &&
       postcss({
         plugins: [
