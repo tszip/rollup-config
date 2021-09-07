@@ -2,7 +2,7 @@
   "name": "@tszip/rollup-config",
   "author": "Christian Lewis",
   "type": "module",
-  "version": "0.9.1",
+  "version": "1.0.0",
   "license": "MIT",
   "engines": {
     "node": ">=14"
@@ -36,7 +36,7 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@tszip/tszip": "^0.6.1",
+    "@tszip/tszip": "^0.8.0",
     "@types/cssnano": "^4.0.1",
     "@types/fs-extra": "^9.0.12",
     "husky": "^7.0.2",
