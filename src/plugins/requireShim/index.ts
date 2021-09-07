@@ -1,14 +1,17 @@
 import { Plugin, RenderedChunk } from "rollup";
 
-const REQUIRE_SHIM = `import { require } from '@tszip/esm-require';\n`;
+const REQUIRE_SHIM = `import '@tszip/esm-require';\n`;
 
 export const requireShim = (): Plugin => ({
   name: 'Shim require().',
   renderChunk: async (code, chunk: RenderedChunk) => {
     /**
-     * Skip if the shim already exists.
+     * Skip if the shim already exists, or if we're emitting this polyfill.
      */
-    if (chunk.imports.includes('@tszip/esm-require')) {
+    if (
+      chunk.imports.includes('@tszip/esm-require') &&
+      chunk.fileName.endsWith('esm-require.js')
+    ) {
       return null;
     }
 

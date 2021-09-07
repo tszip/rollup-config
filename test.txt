@@ -1,12 +1,8 @@
-[2J[3J[H- Compiling modules...
-✔ Compiled successfully
-Watching for changes
-[2J[3J[H- Compiling modules...
-✔ Compiled successfully
-Watching for changes
-[2J[3J[H- Compiling modules...
-✔ Compiled successfully
-Watching for changes
-[2J[3J[H- Compiling modules...
-✔ Compiled successfully
-Watching for changes
+file:///home/christian/PersonalProjects/rollup-config/dist/plugins/requireShim/index.js:1
+import{require as e}from"@tszip/esm-require";const r="import { require } from '@tszip/esm-require';\n",i=()=>({name:"Shim require().",renderChunk:async(e,i)=>{if(i.imports.includes("@tszip/esm-require"))return null;if(e.startsWith("#!")){const i=e.indexOf("\n")+1;return{code:e.slice(0,i)+r+e.slice(i),map:null}}return{code:r+e,map:null}}});export{i as requireShim};
+       ^^^^^^^
+SyntaxError: The requested module '@tszip/esm-require' does not provide an export named 'require'
+    at ModuleJob._instantiate (internal/modules/esm/module_job.js:104:21)
+    at async ModuleJob.run (internal/modules/esm/module_job.js:149:5)
+    at async Loader.import (internal/modules/esm/loader.js:166:24)
+    at async Object.loadESM (internal/process/esm_loader.js:68:5)
