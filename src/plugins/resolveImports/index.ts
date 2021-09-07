@@ -1,12 +1,12 @@
-import { readFile } from 'fs/promises';
 import { dirname, extname, isAbsolute, relative } from 'path';
-import { resolve as resolveExports } from 'resolve.exports';
 import {
-  importPattern,
-  getPackageJson,
-  renameExtension,
   exists,
+  getPackageJson,
+  importPattern,
+  renameExtension,
 } from './utils/filesystem';
+import { readFile } from 'fs/promises';
+import { resolve as resolveExports } from 'resolve.exports';
 
 /**
  * Resolve every relative import in output to their entry points.
@@ -92,7 +92,7 @@ export const resolveImports = (watch = false) => {
          * Crawl package.json.
          */
         const packageJsonPath = getPackageJson(absEntryPoint);
-        if (packageJsonPath && await exists(packageJsonPath)) {
+        if (packageJsonPath && (await exists(packageJsonPath))) {
           /**
            * Check if there's `exports` package.json logic. if there is, it
            * controls the flow.

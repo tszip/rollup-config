@@ -13,7 +13,7 @@ const configs = async () => {
     },
     external: (id) => id !== input,
     plugins: [resolveImports(), shebang()],
-    onwarn: () => { },
+    onwarn: () => {},
   }));
 };
 

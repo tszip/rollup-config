@@ -13,8 +13,8 @@
  * @see https://github.com/GoogleChromeLabs/proxx/blob/master/lib/simple-ts.js
  * @see https://twitter.com/jaffathecake/status/1145979217852678144
  */
-import fs from 'fs-extra';
 import execa from 'execa';
+import fs from 'fs-extra';
 import glob from 'glob-promise';
 
 import { basename, extname, join } from 'path';
@@ -28,9 +28,7 @@ export interface RunTscArgs {
 export const execTsc = async ({
   tsconfig,
   transpileOnly = false,
-  // watch = false,
 }: RunTscArgs) => {
-
   const tscFlags = getTscFlags({ tsconfig });
 
   /**
@@ -51,12 +49,11 @@ export const execTsc = async ({
   const srcFiles = await glob('src/**/*', { nodir: true });
   await Promise.all(
     srcFiles
-      .filter(
-        (file: string) => !/^\.(ts|tsx|js|jsx|json)$/.test(extname(file))
-      )
+      .filter((file: string) => !/^\.(ts|tsx|js|jsx|json)$/.test(extname(file)))
       .map(
-        async (file: string) => await fs.copy(file, join('dist', basename(file)))
-      )
+        async (file: string) =>
+          await fs.copy(file, join('dist', basename(file))),
+      ),
   );
 
   // if (watch) {
@@ -64,4 +61,4 @@ export const execTsc = async ({
   //   console.log('Calling tsc:', watchArgs);
   //   await execa('tsc', watchArgs);
   // }
-}
+};

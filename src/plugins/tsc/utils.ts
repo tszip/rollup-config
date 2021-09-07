@@ -11,9 +11,9 @@ export function loadConfig() {
     ts.sys,
     process.cwd(),
     undefined,
-    fileName
+    fileName,
   );
-  
+
   return parsedTsConfig;
 }
 
@@ -77,7 +77,7 @@ export const getTscFlags = (customFlags: TscFlags) => {
       case 'tsconfig':
         args.push('-p', value.toString());
         break;
-      
+
       default:
         args.push(`--${flag}`, value.toString());
         break;
@@ -85,4 +85,4 @@ export const getTscFlags = (customFlags: TscFlags) => {
   }
 
   return args;
-}
+};

@@ -1,4 +1,4 @@
-import { extractErrors, ExtractErrorOptions } from "./extractErrors";
+import { ExtractErrorOptions, extractErrors } from './extractErrors';
 
 export const errorExtraction = async (errorCodeOpts: ExtractErrorOptions) => {
   const findAndRecordErrorCodes = await extractErrors(errorCodeOpts);
@@ -14,4 +14,4 @@ export const errorExtraction = async (errorCodeOpts: ExtractErrorOptions) => {
       return { code, map: null };
     },
   };
-}
+};

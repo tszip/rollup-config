@@ -5,11 +5,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { parse, ParserOptions } from '@babel/parser';
 import traverse from '@babel/traverse';
-import { invertObject } from './invertObject';
-import { evalToString } from './evalToString';
+
+import { ParserOptions, parse } from '@babel/parser';
 import { mkdir, readFile, writeFile } from 'fs/promises';
+import { evalToString } from './evalToString';
+import { invertObject } from './invertObject';
 
 const babelParserOptions: ParserOptions = {
   sourceType: 'module',
@@ -27,17 +28,17 @@ const babelParserOptions: ParserOptions = {
 } as ParserOptions; // workaround for trailingFunctionCommas syntax
 
 export interface ExtractErrorOptions {
-  errorMapPath: string
-  appErrorPath: string
+  errorMapPath: string;
+  appErrorPath: string;
 }
 
 export async function extractErrors({
   errorMapPath,
-  appErrorPath
+  appErrorPath,
 }: ExtractErrorOptions) {
   if (!errorMapPath) {
     throw new Error(
-      'Missing options. Ensure you pass an object with `errorMapFilePath`.'
+      'Missing options. Ensure you pass an object with `errorMapFilePath`.',
     );
   }
 
@@ -105,7 +106,7 @@ export async function extractErrors({
     await writeFile(
       errorMapPath,
       JSON.stringify(invertObject(existingErrorMap), null, 2) + '\n',
-      'utf-8'
+      'utf-8',
     );
 
     // Write the error files, unless they already exist
@@ -120,7 +121,7 @@ function ErrorDev(message) {
 
 export default ErrorDev;
       `,
-      'utf-8'
+      'utf-8',
     );
 
     await writeFile(
@@ -141,7 +142,7 @@ function ErrorProd(code) {
 
 export default ErrorProd;
 `,
-      'utf-8'
+      'utf-8',
     );
   }
 

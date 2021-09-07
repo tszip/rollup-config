@@ -1,22 +1,21 @@
-import { resolveImports } from "@tszip/resolve-imports";
+import { resolveImports } from '@tszip/resolve-imports';
 
-import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
+import postcss from 'rollup-plugin-postcss';
 
-import { RollupOptions } from "rollup";
-import { terser } from "rollup-plugin-terser";
+import { RollupOptions } from 'rollup';
+import { terser } from 'rollup-plugin-terser';
 
 const shebang = require('rollup-plugin-preserve-shebang');
 
 type RunConfig = Omit<CreateConfigOptions, 'action'>;
 interface CreateConfigOptions {
-  action: 'build' | 'dev' | 'watch'
-  input: string
-  minify?: boolean
+  action: 'build' | 'dev' | 'watch';
+  input: string;
+  minify?: boolean;
   // extractErrors: boolean
 }
-
 
 const DEFAULT_PLUGINS = [shebang()];
 const RESOLVE_ESM_PLUGINS = [resolveImports()];
@@ -36,24 +35,27 @@ export const createDevConfig = ({ input }: RunConfig): RollupOptions => {
       ...DEFAULT_PLUGINS,
       ...RESOLVE_ESM_PLUGINS,
       input.endsWith('.css') &&
-      postcss({
-        plugins: [
-          autoprefixer(),
-          cssnano({
-            preset: 'default',
-          }),
-        ],
-        inject: false,
-        extract: true,
-      }),
+        postcss({
+          plugins: [
+            autoprefixer(),
+            cssnano({
+              preset: 'default',
+            }),
+          ],
+          inject: false,
+          extract: true,
+        }),
     ],
   };
-}
+};
 
 /**
  * The maximum compression config for production builds.
  */
-export const createBuildConfig = ({ input, minify }: RunConfig): RollupOptions => {
+export const createBuildConfig = ({
+  input,
+  minify,
+}: RunConfig): RollupOptions => {
   return {
     output: {
       file: input,
@@ -67,44 +69,45 @@ export const createBuildConfig = ({ input, minify }: RunConfig): RollupOptions =
       ...DEFAULT_PLUGINS,
       ...RESOLVE_ESM_PLUGINS,
       input.endsWith('.css') &&
-      postcss({
-        plugins: [
-          autoprefixer(),
-          cssnano({
-            preset: 'default',
-          }),
-        ],
-        inject: false,
-        extract: true,
-      }),
-      minify && terser({
-        format: {
-          keep_quoted_props: true,
-          comments: false,
-        },
-        compress: {
-          keep_infinity: true,
-          pure_getters: true,
-          passes: 2,
-        },
-        ecma: 2020,
-        module: true,
-        toplevel: true,
-      }),
+        postcss({
+          plugins: [
+            autoprefixer(),
+            cssnano({
+              preset: 'default',
+            }),
+          ],
+          inject: false,
+          extract: true,
+        }),
+      minify &&
+        terser({
+          format: {
+            keep_quoted_props: true,
+            comments: false,
+          },
+          compress: {
+            keep_infinity: true,
+            pure_getters: true,
+            passes: 2,
+          },
+          ecma: 2020,
+          module: true,
+          toplevel: true,
+        }),
     ],
     shimMissingExports: true,
     treeshake: {
       propertyReadSideEffects: false,
     },
   };
-}
+};
 
 export const createConfig = ({
   action,
   input,
   minify = false,
-  // extractErrors,
-}: CreateConfigOptions): RollupOptions => {
+}: // extractErrors,
+CreateConfigOptions): RollupOptions => {
   let config = {};
   switch (action) {
     case 'build':
@@ -132,6 +135,6 @@ export const createConfig = ({
     /**
      * Silence warnings.
      */
-    onwarn: () => { },
+    onwarn: () => {},
   };
-}
+};

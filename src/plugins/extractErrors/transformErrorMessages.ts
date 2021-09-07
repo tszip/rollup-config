@@ -7,8 +7,8 @@
  */
 
 import * as fs from 'fs';
-import { invertObject } from './invertObject';
 import { evalToString } from './evalToString';
+import { invertObject } from './invertObject';
 // @ts-ignore
 import { addDefault } from '@babel/helper-module-imports';
 
@@ -21,7 +21,7 @@ interface TransformErrorMessagesOptions {
 export default function transformErrorMessages({
   babel,
   appRoot,
-  appErrorsJson
+  appErrorsJson,
 }: TransformErrorMessagesOptions) {
   const t = babel.types;
 
@@ -56,7 +56,7 @@ export default function transformErrorMessages({
           const errorMsgQuasis = errorMsgLiteral
             .split('%s')
             .map((raw: any) =>
-              t.templateElement({ raw, cooked: String.raw({ raw } as any) })
+              t.templateElement({ raw, cooked: String.raw({ raw } as any) }),
             );
 
           // Import ReactError
@@ -65,7 +65,7 @@ export default function transformErrorMessages({
             appRoot + '/errors/ErrorDev.js',
             {
               nameHint: 'InvariantError',
-            }
+            },
           );
 
           // Outputs:
@@ -73,7 +73,7 @@ export default function transformErrorMessages({
           const devThrow = t.throwStatement(
             t.callExpression(reactErrorIdentfier, [
               t.templateLiteral(errorMsgQuasis, errorMsgExpressions),
-            ])
+            ]),
           );
 
           if (noMinify) {
@@ -86,15 +86,15 @@ export default function transformErrorMessages({
             path.replaceWith(
               t.ifStatement(
                 t.unaryExpression('!', condition),
-                t.blockStatement([devThrow])
-              )
+                t.blockStatement([devThrow]),
+              ),
             );
             return;
           }
 
           // Avoid caching because we write it as we go.
           const existingErrorMap = JSON.parse(
-            fs.readFileSync(appErrorsJson, 'utf-8')
+            fs.readFileSync(appErrorsJson, 'utf-8'),
           );
           const errorMap = invertObject(existingErrorMap);
 
@@ -113,12 +113,12 @@ export default function transformErrorMessages({
             path.replaceWith(
               t.ifStatement(
                 t.unaryExpression('!', condition),
-                t.blockStatement([devThrow])
-              )
+                t.blockStatement([devThrow]),
+              ),
             );
             path.addComment(
               'leading',
-              'FIXME (minify-errors-in-prod): Unminified error message in production build!'
+              'FIXME (minify-errors-in-prod): Unminified error message in production build!',
             );
             return;
           }
@@ -130,7 +130,7 @@ export default function transformErrorMessages({
             appRoot + '/errors/ErrorProd.js',
             {
               nameHint: 'InvariantErrorProd',
-            }
+            },
           );
 
           // Outputs:
@@ -139,7 +139,7 @@ export default function transformErrorMessages({
             t.callExpression(reactErrorProdIdentfier, [
               t.numericLiteral(prodErrorId),
               ...errorMsgExpressions,
-            ])
+            ]),
           );
 
           // Outputs:
@@ -157,10 +157,10 @@ export default function transformErrorMessages({
                 t.ifStatement(
                   DEV_EXPRESSION,
                   t.blockStatement([devThrow]),
-                  t.blockStatement([prodThrow])
+                  t.blockStatement([prodThrow]),
                 ),
-              ])
-            )
+              ]),
+            ),
           );
         }
       },

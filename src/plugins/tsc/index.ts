@@ -1,7 +1,8 @@
-import { Plugin } from "rollup";
-import { execTsc, RunTscArgs } from "./exec";
-import { resolve } from 'path';
 import fg from 'fast-glob';
+
+import { RunTscArgs, execTsc } from './exec';
+import { Plugin } from 'rollup';
+import { resolve } from 'path';
 
 export function watchTsSrcFiles(): Plugin {
   return {
@@ -13,7 +14,7 @@ export function watchTsSrcFiles(): Plugin {
           this.addWatchFile(resolve(file));
         }
       }
-    }
+    },
   };
 }
 
