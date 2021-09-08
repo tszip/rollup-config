@@ -1,7 +1,10 @@
+/**
+ * Import first for require() shim.
+ */
+import { resolveImports } from '@tszip/resolve-imports';
+
 import glob from 'fast-glob';
 import shebang from 'rollup-plugin-preserve-shebang';
-
-import { resolveImports } from '@tszip/resolve-imports';
 
 const configs = async () => {
   const filesToOptimize = await glob('dist/**/*.js');
