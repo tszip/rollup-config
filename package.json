@@ -2,7 +2,7 @@
   "name": "@tszip/rollup-config",
   "author": "Christian Lewis",
   "type": "module",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "license": "MIT",
   "engines": {
     "node": ">=14"
