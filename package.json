@@ -42,24 +42,24 @@
     "trailingComma": "all"
   },
   "devDependencies": {
-    "@tszip/tszip": "^1.5.1",
-    "@types/cssnano": "^4.0.1",
-    "@types/fs-extra": "^9.0.12",
-    "husky": "^7.0.2",
+    "@tszip/tszip": "^4.0.2",
+    "@types/cssnano": "^5.0.0",
+    "@types/fs-extra": "^9.0.13",
+    "husky": "^7.0.4",
     "tslib": "^2.3.1",
     "typescript": "^4.4.2",
     "yarn-deduplicate": "^3.1.0"
   },
   "dependencies": {
     "@babel/helper-module-imports": "^7.15.4",
-    "@rollup/plugin-typescript": "^8.2.5",
-    "@tszip/resolve-imports": "^2.0.0",
-    "autoprefixer": "^10.3.4",
-    "cssnano": "^5.0.8",
-    "fast-glob": "^3.2.7",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@tszip/resolve-imports": "2.6.2",
+    "autoprefixer": "^10.4.2",
+    "cssnano": "^5.0.15",
+    "fast-glob": "^3.2.9",
     "fs-extra": "^10.0.0",
-    "rollup": "^2.56.3",
-    "rollup-plugin-postcss": "^4.0.1",
+    "rollup": "^2.63.0",
+    "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-preserve-shebang": "^1.0.1",
     "rollup-plugin-terser": "^7.0.2"
   }
