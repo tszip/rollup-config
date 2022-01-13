@@ -1340,6 +1340,18 @@
     fs-extra "^10.0.0"
     resolve "^1.20.0"
 
+"@tszip/resolve-imports@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@tszip/resolve-imports/-/resolve-imports-3.0.0.tgz#7bc51f5de16a042c73b325ae2cffc897e2cbfb09"
+  integrity sha512-9nftYHzLuEHljUGTDWN+WUeR2+0c24IN29+plqMXuni+092UD0Om7RyfS1MtdSbH/OT+AsX5tMPO8U4jjKmaEg==
+  dependencies:
+    "@tszip/cjs" "^1.5.0"
+    "@tszip/tszip" "^1.14.0"
+    "@types/fs-extra" "^9.0.12"
+    "@types/resolve" "^1.20.1"
+    fs-extra "^10.0.0"
+    resolve "^1.20.0"
+
 "@tszip/rollup-config@^1.7.0":
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/@tszip/rollup-config/-/rollup-config-1.7.0.tgz#fcae52eea8533f0b0a9e939bd135c817d2585807"
@@ -6376,11 +6388,6 @@ safe-buffer@^5.1.0, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
-
-safe-buffer@~5.2.0:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
-  integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
 
 safe-identifier@^0.4.2:
   version "0.4.2"
