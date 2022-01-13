@@ -1340,10 +1340,10 @@
     fs-extra "^10.0.0"
     resolve "^1.20.0"
 
-"@tszip/resolve-imports@latest":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@tszip/resolve-imports/-/resolve-imports-3.0.1.tgz#4b4f7a651c053ce908634c6289003dd0ea7a646f"
-  integrity sha512-tDo9WaCOoQLakP1nBQAzdKmY9j8Z6rxRVJIBgM2FISouvJwODAMUYYdCjk6CWPHkrI2DjzVZ0ooGr0I3yn/kew==
+"@tszip/resolve-imports@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@tszip/resolve-imports/-/resolve-imports-3.0.2.tgz#2dec5d76e56464bf739aed08140909a4b51cc9c0"
+  integrity sha512-SSaCnY77dghQABAiZAec2Ek5zuDC93R8jCKtH3zyLqwchmQpnm0G7dRnuAzZoa3xLhPE1w8Gnk+giU4EHU8DDg==
   dependencies:
     "@tszip/cjs" latest
     "@tszip/tszip" latest

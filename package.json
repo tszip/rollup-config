@@ -54,7 +54,7 @@
   "dependencies": {
     "@babel/helper-module-imports": "^7.15.4",
     "@rollup/plugin-typescript": "^8.3.0",
-    "@tszip/resolve-imports": "latest",
+    "@tszip/resolve-imports": "3.0.2",
     "autoprefixer": "^10.4.2",
     "cssnano": "^5.0.15",
     "fast-glob": "^3.2.9",
